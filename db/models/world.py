@@ -1,8 +1,6 @@
 from db.models.base import Base
 from sqlalchemy.orm import Mapped, mapped_column
 
-print("Successfully imported world.py")
-
 class World(Base):
     __tablename__ = "worlds"
 

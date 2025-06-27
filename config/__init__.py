@@ -1,1 +1,1 @@
-from .settings import BOT_TOKEN, DATABASE_URL
+from .settings import BOT_TOKEN, DATABASE_URL, TEST_GUILD

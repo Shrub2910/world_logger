@@ -1,4 +1,4 @@
-from config import BOT_TOKEN
+from config import BOT_TOKEN, TEST_GUILD
 from db.session import engine
 from db.models.base import Base
 
@@ -9,18 +9,18 @@ Base.metadata.create_all(bind=engine)
 import hikari
 import lightbulb
 
+import extensions
 
+print(BOT_TOKEN)
+print(TEST_GUILD)
 
-bot = hikari.GatewayBot(BOT_TOKEN)
+bot = hikari.GatewayBot(BOT_TOKEN, intents=hikari.Intents.ALL)
 client = lightbulb.client_from_app(bot)
 
-bot.subscribe(hikari.StartingEvent, client.start)
-
-@client.register()
-class TestCommand(lightbulb.SlashCommand, name="test", description="This is a test command."):
-    @lightbulb.invoke
-    async def invoke(self, ctx: lightbulb.Context) -> None:
-        await ctx.respond("Hi!")
+@bot.listen(hikari.StartingEvent)
+async def on_starting(_: hikari.StartingEvent) -> None:
+    await client.load_extensions_from_package(package=extensions, recursive=True)
+    await client.start()
 
 bot.run()
 

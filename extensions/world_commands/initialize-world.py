@@ -13,8 +13,8 @@ class InitializeWorld(
     name="initialize-world",
     description="This command sets up the discord server to be a new world"
 ):
-    name = lightbulb.string("name", "The name of your world")
-    description = lightbulb.string("description", "The description of your world")
+    name = lightbulb.string("name", "The name of your world", min_length=3)
+    description = lightbulb.string("description", "The description of your world", min_length=3)
 
     @lightbulb.invoke
     async def invoke(self, ctx: lightbulb.Context) -> None:

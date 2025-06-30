@@ -2,6 +2,7 @@ from db.session import SessionLocal
 from db.models import World, Character
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 
 import lightbulb
 
@@ -13,8 +14,8 @@ class AddCharacter(
     name="add-character",
     description="Adds a character to your world."
 ):
-    name = lightbulb.string("name", "Name of your character.")
-    description = lightbulb.string("description", "Description of your character.")
+    name = lightbulb.string("name", "Name of your character.", min_length=3)
+    description = lightbulb.string("description", "Description of your character.", min_length=3)
 
 
     @lightbulb.invoke
@@ -38,6 +39,9 @@ class AddCharacter(
             session.add(new_character)
             session.commit()
             await ctx.respond("Succesfully created new character.")
+        except IntegrityError:
+            session.rollback()
+            await ctx.respond("Character with this name already exists!")
         except Exception as e:
             session.rollback()
             print(f"Error occured: {e}")

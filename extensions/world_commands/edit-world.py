@@ -8,17 +8,20 @@ import lightbulb
 loader = lightbulb.Loader()
 
 @loader.command
-class DeleteWorld(
+class EditWorld(
     lightbulb.SlashCommand,
-    name="delete-world",
-    description="Deletes the world associated with the discord server"
+    name="edit-world",
+    description="Allows you to edit the name and description of the world."
 ):
+    name = lightbulb.string("name", "The new name of the world.", min_length=3, default="")
+    description = lightbulb.string("description", "The new description of the world.", min_length=3, default="")
+
     @lightbulb.invoke
     async def invoke(self, ctx: lightbulb.Context) -> None:
         session: Session = SessionLocal()
 
         try:
-            stmt = select(World).where(World.discord_server_id==str(ctx.guild_id))
+            stmt = select(World).where(World.discord_server_id == str(ctx.guild_id))
             result = session.execute(stmt)
             world = result.scalar_one_or_none()
 
@@ -26,13 +29,21 @@ class DeleteWorld(
                 await ctx.respond("World has not been created yet!")
                 return 
             
-            session.delete(world)
+            if len(self.name) >= 3:
+                world.name = self.name
+            
+            if len(self.description) >=3:
+                world.description = self.description
+
             session.commit()
-            await ctx.respond("World deleted succesfully")
+            await ctx.respond("Succesfully updated world!")
         except Exception as e:
             session.rollback()
             print(f"Error has occured: {e}")
-            await ctx.respond("Error deleting world!")
+            await ctx.respond("Error updating world!")
         finally:
             session.close()
 
+        
+    
+        

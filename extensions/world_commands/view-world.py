@@ -1,6 +1,7 @@
 from db.session import SessionLocal
 from db.models import World
 from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 
 import lightbulb
@@ -15,7 +16,7 @@ class ViewWorld(
 ):
     @lightbulb.invoke
     async def invoke(self, ctx: lightbulb.Context) -> None:
-        session = SessionLocal()
+        session: Session = SessionLocal()
         try:
             stmt = select(World).where(World.discord_server_id==str(ctx.guild_id))
             result = session.execute(stmt)

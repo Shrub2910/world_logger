@@ -1,6 +1,7 @@
 from db.session import SessionLocal
 from db.models import World
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
 
 import lightbulb
 
@@ -17,7 +18,7 @@ class InitializeWorld(
 
     @lightbulb.invoke
     async def invoke(self, ctx: lightbulb.Context) -> None:
-        session = SessionLocal()
+        session: Session = SessionLocal()
 
         new_world = World(
             discord_server_id=str(ctx.guild_id),

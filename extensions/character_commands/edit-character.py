@@ -17,6 +17,8 @@ class EditCharacter(
     name = lightbulb.string("name", "The name of the character")
     new_name = lightbulb.string("new-name", "The new name of the character", min_length=3, default="")
     new_description = lightbulb.string("new-description", "The new description of the character", min_length=3, default="")
+    new_image = lightbulb.string("new-image", "Image of your character.", default="")
+    new_thumbnail = lightbulb.string("new-thumbnail", "Thumbnail of your character.", default="")
 
     @lightbulb.invoke
     async def invoke(self, ctx: lightbulb.Context):
@@ -43,6 +45,12 @@ class EditCharacter(
             
             if len(self.new_description) >= 3:
                 character.description = self.new_description
+
+            if self.new_image != "":
+                character.image = self.new_image
+
+            if self.new_thumbnail != "":
+                character.thumbnail = self.new_thumbnail
 
             session.commit()
             await ctx.respond("Succesfully updated character!")

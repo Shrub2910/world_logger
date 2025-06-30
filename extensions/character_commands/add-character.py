@@ -16,6 +16,9 @@ class AddCharacter(
 ):
     name = lightbulb.string("name", "Name of your character.", min_length=3)
     description = lightbulb.string("description", "Description of your character.", min_length=3)
+    image = lightbulb.string("image", "Image of your character.", default="")
+    thumbnail = lightbulb.string("thumbnail", "Thumbnail of your character.", default="")
+
 
 
     @lightbulb.invoke
@@ -33,6 +36,8 @@ class AddCharacter(
             new_character = Character(
                 name=self.name,
                 description=self.description,
+                image = self.image,
+                thumbnail = self.thumbnail,
                 world=world
             )
 

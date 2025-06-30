@@ -12,6 +12,8 @@ class Character(Base):
     
     name: Mapped[str] = mapped_column()
     description: Mapped[str] = mapped_column()
+    image: Mapped[str] = mapped_column()
+    thumbnail: Mapped[str] = mapped_column()
     world_id: Mapped[int] = mapped_column(ForeignKey("worlds.id"))
     world: Mapped["World"] = relationship("World", back_populates="characters")
 

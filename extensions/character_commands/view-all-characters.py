@@ -2,6 +2,7 @@ from db.session import SessionLocal
 from db.models import World, Character
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from embeds import CreateMultipleCharacterEmbeds
 
 import lightbulb
 
@@ -27,15 +28,9 @@ class ViewAllCharacters(
             
             characters: list(Character) = world.characters
 
-            message = ""
-
-            for character in characters:
-                message += f"{character.name}\n"
-            
-            if len(message) == 0:
-                await ctx.respond("There are no characters in your world")
-            else:
-                await ctx.respond(message)
+            embeds = CreateMultipleCharacterEmbeds(characters, world.name)
+            await ctx.respond(embeds=embeds)
+        
         except Exception as e:
             session.rollback()
             print(f"Error occured: {e}")

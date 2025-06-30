@@ -2,6 +2,7 @@ from db.session import SessionLocal
 from db.models import World, Character
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from embeds import CreateCharacterEmbed
 
 import lightbulb
 
@@ -35,7 +36,7 @@ class ViewCharacter(
                 await ctx.respond("There is no character with that name!")
                 return
             
-            await ctx.respond(f"Character name: {character.name}\nCharacter description: {character.description}")
+            await ctx.respond(CreateCharacterEmbed(character.name, character.description, character.image, character.thumbnail))
         except Exception as e:
             session.rollback()
             print(f"Error occured {e}")

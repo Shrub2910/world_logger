@@ -15,6 +15,8 @@ class EditWorld(
 ):
     name = lightbulb.string("name", "The new name of the world.", min_length=3, default="")
     description = lightbulb.string("description", "The new description of the world.", min_length=3, default="")
+    image = lightbulb.string("image", "The new image of your world.", default="")
+    thumbnail = lightbulb.string("thumbnail", "The new thumbnail of your world.", default="")
 
     @lightbulb.invoke
     async def invoke(self, ctx: lightbulb.Context) -> None:
@@ -34,6 +36,12 @@ class EditWorld(
             
             if len(self.description) >=3:
                 world.description = self.description
+            
+            if self.image != "":
+                world.image = self.image
+            
+            if self.thumbnail != "":
+                world.thumbnail = self.thumbnail
 
             session.commit()
             await ctx.respond("Succesfully updated world!")

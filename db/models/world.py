@@ -9,4 +9,6 @@ class World(Base):
     discord_server_id: Mapped[str] = mapped_column(unique=True, nullable=False)
     name: Mapped[str] = mapped_column()
     description: Mapped[str] = mapped_column()
+    image: Mapped[str] = mapped_column()
+    thumbnail: Mapped[str] = mapped_column()
     characters: Mapped[list["Character"]] = relationship("Character", back_populates="world", cascade="all, delete-orphan")

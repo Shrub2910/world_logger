@@ -2,6 +2,7 @@ from db.session import SessionLocal
 from db.models import World
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from embeds import CreateWorldEmbed
 
 
 import lightbulb
@@ -23,7 +24,7 @@ class ViewWorld(
             world = result.scalar_one_or_none()
 
             if world:
-                await ctx.respond(f"The name of the world is: {world.name}\nThe description of the world is: {world.description}")
+                await ctx.respond(CreateWorldEmbed(world.name, world.description, world.image, world.thumbnail))
             else:
                 await ctx.respond("World has not been created yet!")
         finally:

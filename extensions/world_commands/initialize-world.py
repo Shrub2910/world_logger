@@ -15,6 +15,8 @@ class InitializeWorld(
 ):
     name = lightbulb.string("name", "The name of your world", min_length=3)
     description = lightbulb.string("description", "The description of your world", min_length=3)
+    image = lightbulb.string("image", "Image of your character.", default="")
+    thumbnail = lightbulb.string("thumbnail", "Thumbnail of your character.", default="")
 
     @lightbulb.invoke
     async def invoke(self, ctx: lightbulb.Context) -> None:
@@ -23,6 +25,8 @@ class InitializeWorld(
         new_world = World(
             discord_server_id=str(ctx.guild_id),
             name=self.name,
+            image=self.image,
+            thumbnail=self.thumbnail,
             description=self.description
         )
 
